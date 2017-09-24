@@ -4,7 +4,7 @@ I'm creating this webpage that'll display train up-to-date arrival and departure
 
 ## Getting started 
 
-Download the code so that you can try this out on your local machine. 
+See what this looks like right away on my [Codepen](https://codepen.io/alibar/pen/yzVEeP). Or, download the code so that you can try this out on your local machine. 
 
 ### Built with 
 [Bootstrap](https://getbootstrap.com/),
