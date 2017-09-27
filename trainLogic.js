@@ -23,7 +23,7 @@ $("#add-train-btn").on("click", function(){
     //grab user input
     var trName = $("#train-name-input").val().trim();
     var trDest = $("#destination-input").val().trim();
-    var trTime = $("#first-train-time").val().trim();
+    var trTime = $("#first-train-input").val().trim();
     var trFreq = $("#frequency-input").val().trim();
 
     // Creates local "temporary" object for holding employee data
@@ -38,16 +38,78 @@ $("#add-train-btn").on("click", function(){
     database.ref().push(newTrain);
 
     //log everything to console
-    console.log(newTrain.name);
-    console.log(newTrain.dest);
-    console.log(newTrain.firstTrain);
-    console.log(newTrain.freq);
+    // console.log(newTrain.name);
+    // console.log(newTrain.dest);
+    // console.log(newTrain.firstTrain);
+    // console.log(newTrain.freq);
 
     //Clears all of the text boxes
     $("#train-name-input").val("");
     $("#destination-input").val("");
-    $("#first-train-time").val("");
+    $("#first-train-input").val("");
     $("#frequency-input").val("");
 });
 
 // 3. Create Firebase event for adding employee to the database and a row in the html when a user adds an entry
+
+database.ref().on("child_added", function(snapshot, prevChildKey) {
+    // console.log(snapshot.val());
+
+    //Store everything into a variable
+    var trName = snapshot.val().name;
+    var trDest = snapshot.val().dest;
+    var trTime = snapshot.val().firstTrain;
+    var trFreq = snapshot.val().freq;
+
+    // //Train info
+    // console.log(trName);
+    // console.log(trDest);
+    // console.log(trTime);
+    // console.log(trFreq);
+
+    var trStartTime = moment(trTime,"HH:mm").format("hh:mm A");
+
+    //calculate next arrival
+
+    //if the first train arrives at 9:00am, and the frequency
+    //time is 30 min then create a list of all the train times.
+    //there are 24 hours in a day
+    //it's 9am - if 9 is less than 24 then create a list
+    // first element is 9 am and it increments by trFreq
+    var trTimePretty = moment(trTime,"HH:mm").format("hh:mm A");
+    console.log("First train time", trTimePretty);
+
+    var trTimeMilitary = moment(trTime,"HH:mm").format("HH:mm");
+    console.log("military time", trTimeMilitary);
+
+    var trFreqPretty = moment(trFreq,"mm").format("mm");
+    console.log("This is the frequency", trFreqPretty, "minutes");
+
+    var lastHourofDay = moment("23:00", "HH:mm").format("HH:mm");
+    console.log("this is last hour of day", lastHourofDay);
+
+
+
+    for (var i = trTimeMilitary; trTimeMilitary < lastHourofDay; trTimeMilitary++){
+        var trainSchedule = [trTime];
+        console.log("hi",trainSchedule);
+        trainSchedule.push(trTime + trFreq);
+    }
+
+    console.log("this is the schedule", trainSchedule);
+
+    // Then to
+    //figure out the next train time generate time now and compare it to
+    //each element in that schedule list. If time now is < time in schdule
+    //that element is the next arrival. Minutes away is next arrival minus
+    //time now.
+
+    var nextArrival = trTime + trFreq;
+    var nextArrivalPretty = moment(trTime,"HH:mm").format("hh:mm A");
+
+
+    $("#train-table > tbody").append
+
+    ("<tr><td>" + trName + "</td><td>" + trDest + "</td><td>" + trFreq + "</td><td>" + nextArrivalPretty + "</td></tr>");
+
+});
