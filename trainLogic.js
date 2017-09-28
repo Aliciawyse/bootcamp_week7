@@ -1,4 +1,4 @@
-
+//Set up Firebase and send data to Firebase
 var config = {
     apiKey: "AIzaSyBU4XqE9OhUzkBdQtzqwghU5yph6m8boF0",
     authDomain: "traintracker-8f239.firebaseapp.com",
@@ -11,7 +11,7 @@ var config = {
 firebase.initializeApp(config);
 var database = firebase.database();
 
-// 2. Create button for adding new trains - then update the html + update the database
+//Create button for adding new trains - then update the html + update the database
 $("#add-train-btn").on("click", function(){
 
     event.preventDefault();
@@ -40,11 +40,10 @@ $("#add-train-btn").on("click", function(){
     $("#first-train-input").val("");
     $("#frequency-input").val("");
 
-    var nextArrivalPretty = moment(nextArrival,"HH:mm").format("hh:mm A");
 
 });
 
-
+//Grab data from Firebase and put it in browser. Also, calculate next arrival and minutes away
 database.ref().on("child_added", function(snapshot, prevChildKey) {
 
     var trName = snapshot.val().name;
@@ -71,8 +70,7 @@ database.ref().on("child_added", function(snapshot, prevChildKey) {
     }
 
     console.log("The Train Schedule",tempArray);
-
-    //
+    
 
     var currentTime = moment();
 
@@ -89,53 +87,15 @@ database.ref().on("child_added", function(snapshot, prevChildKey) {
         if (moment().isBefore(moment(tempArray[i], "HH:mm"))){
             var nextArrival = tempArray[i];
             console.log("if stmt working");
-            console.log(nextArrival);
+            console.log("This is the next arrival",nextArrival);
             break
         }
     }
 
-
-
-
     $("#train-table > tbody").append
 
-    ("<tr><td>" + trName + "</td><td>" + trDest + "</td><td>" + trFreq + "</td><td>" + nextArrivalPretty + "</td></tr>");
+    ("<tr><td>" + trName + "</td><td>" + trDest + "</td><td>" + trFreq + "</td><td>" + nextArrival + "</td></tr>");
 
 
 });
 
-
-
-
-// function aTest(){
-//
-//     event.preventDefault();
-//
-//     console.log("a test");
-//
-//     var trTime = $("#first-train-input").val().trim();
-//     var trFreq = $("#frequency-input").val().trim();
-//
-//     var tempArray = [];
-//     var trStartTime = moment(trTime,"HH:mm");
-//     var endOfDay = moment("23:59","HH:mm");
-//     console.log(endOfDay.format("HH:mm d"));
-//     console.log("HII", trStartTime.format("d"), endOfDay.format("d"));
-//
-//     while (trStartTime.format("d") === endOfDay.format("d")) {
-//         console.log(trStartTime.format("HH:mm d"));
-//         tempArray.push(trStartTime.format("HH:mm"));
-//         trStartTime = trStartTime.add(parseInt(trFreq),"m");
-//     }
-//
-//     console.log("Created now",tempArray);
-//
-//     for (var i = 0; i < tempArray.length; i ++){
-//
-//         if (trStartTime.format("HH:mm") > tempArray[i]){
-//             var nextArrival = tempArray[i];
-//             console.log(nextArrival);
-//             break
-//         }
-//     }
-// }
