@@ -70,15 +70,9 @@ database.ref().on("child_added", function(snapshot, prevChildKey) {
     }
 
     console.log("The Train Schedule",tempArray);
-    
-
-    var currentTime = moment();
-
-    console.log(currentTime);
+    //var currentTime = moment();
 
     var trainStartforNxtArrival = moment(trTime,"HH:mm");
-
-
 
     for (var i = 0; i < tempArray.length; i ++){
 
@@ -88,13 +82,24 @@ database.ref().on("child_added", function(snapshot, prevChildKey) {
             var nextArrival = tempArray[i];
             console.log("if stmt working");
             console.log("This is the next arrival",nextArrival);
+
+            var nextArrivalPretty = moment(nextArrival,"HH:mm").format("hh:mm A");
+
             break
         }
     }
 
+    //calculate minutes away
+    //    next arrival - now...
+    //
+    var minutesAway = moment().subtract(nextArrivalPretty).format("mm");
+
+    console.log("minutes away", minutesAway);
+    console.log("Pretty",nextArrivalPretty);
+
     $("#train-table > tbody").append
 
-    ("<tr><td>" + trName + "</td><td>" + trDest + "</td><td>" + trFreq + "</td><td>" + nextArrival + "</td></tr>");
+    ("<tr><td>" + trName + "</td><td>" + trDest + "</td><td>" + trFreq + "</td><td>" + nextArrivalPretty + "</td></tr>");
 
 
 });
