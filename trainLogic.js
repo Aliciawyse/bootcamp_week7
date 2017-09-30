@@ -90,17 +90,19 @@ database.ref().on("child_added", function(snapshot, prevChildKey) {
     }
 
     //calculate minutes away
-    //    next arrival - now...
-    //
-    var minutesAway = moment().subtract(nextArrivalPretty).format("mm");
+    var minutesAway = moment(nextArrival,"HH:mm").diff(moment(), 'minutes');
 
     console.log("minutes away", minutesAway);
-    console.log("Pretty",nextArrivalPretty);
+
+    console.log("Next Arrival",nextArrivalPretty);
 
     $("#train-table > tbody").append
 
-    ("<tr><td>" + trName + "</td><td>" + trDest + "</td><td>" + trFreq + "</td><td>" + nextArrivalPretty + "</td></tr>");
+    // ("<tr><td>" + trName + "</td><td>" + trDest + "</td><td>" + trFreq + "</td><td>" + nextArrivalPretty + "</td><td>"+ minutesAway+"</td></tr>");
 
+        //e6 string literals
+
+(`<tr><td> ${trName} </td><td> ${trDest} </td><td> ${trFreq} </td><td> ${nextArrivalPretty} </td><td> ${minutesAway} </td></tr>`);
 
 });
 
